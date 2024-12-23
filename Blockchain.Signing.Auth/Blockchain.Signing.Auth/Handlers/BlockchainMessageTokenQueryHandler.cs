@@ -46,7 +46,8 @@ namespace Blockchain.Signing.Auth.Handlers
                 throw new FailedToParseMessageException("Could not get address from signature provided");
             }
 
-            if ((DateTime.UtcNow - request.RawMessage).TotalSeconds > options.CurrentValue.ExpiresThresholdInSeconds)
+            // Check the threshold either way (Math.Abs)
+            if (Math.Abs((DateTime.UtcNow - request.RawMessage).TotalSeconds) > options.CurrentValue.ExpiresThresholdInSeconds)
             {
                 throw new MessageExpiredException("The message has expired.");
             }
@@ -67,9 +68,8 @@ namespace Blockchain.Signing.Auth.Handlers
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 IssuedAt = DateTime.UtcNow,
-                //Issuer = options.Issuer,
-                //Audience = options.Audience,
-                //Audiences = options.Audiences,
+                Issuer = options.Issuer,
+                Audience = options.Audience,
                 Subject = new ClaimsIdentity(new[] 
                 {
                     new Claim(BlockchainAuthenticationClaimTypes.PublicKey, publicKey) 

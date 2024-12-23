@@ -9,21 +9,20 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Blockchain.Signing.Auth.Options;
 
 namespace Blockchain.Signing.Auth.DependencyInjection;
 
 public static class ApplicationBuilderExtensions
 {
-    public static IApplicationBuilder AddBlockchainTokenIssuanceEndpoint(this IApplicationBuilder builder, Action<TokenOptions> options)
+    public static IApplicationBuilder AddBlockchainTokenIssuanceEndpoint(this IApplicationBuilder builder, Action<TokenEndpointOptions> configureOptions)
     {
+        var tokenEndpointOptions = Configure(configureOptions);
+        var url = new Uri(tokenEndpointOptions.Extension);
+
         builder.UseEndpoints(endpoints =>
         {
-            endpoints.MapPost("blockchain/token", async ([FromBody]TokenQuery request, HttpContext httpContext) =>
+            endpoints.MapPost(url.ToString(), async ([FromBody]TokenQuery request, HttpContext httpContext) =>
             {
                 var handler = httpContext.RequestServices.GetRequiredService<BlockchainMessageTokenQueryHandler>();
 
@@ -32,5 +31,14 @@ public static class ApplicationBuilderExtensions
         });
 
         return builder;
+    }
+
+    private static TokenEndpointOptions Configure(Action<TokenEndpointOptions> configureOptions)
+    {
+        var tokenEndpointOptions = new TokenEndpointOptions();
+
+        configureOptions(tokenEndpointOptions);
+
+        return tokenEndpointOptions;
     }
 }

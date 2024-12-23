@@ -20,7 +20,9 @@ public static class WebApplicationBuilderExtensions
     public static WebApplicationBuilder AddBlockchainSignatureVerification(this WebApplicationBuilder builder, Action<TokenGenerationOptions> options)
     {
         builder.Services.Configure(options);
+
         builder.Services.AddTransient<BlockchainMessageTokenQueryHandler>();
+
         builder.Services.AddKeyedTransient<ISignatureService, EthereumSignatureService>("Ethereum");
 
         return builder;
