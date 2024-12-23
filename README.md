@@ -85,3 +85,8 @@ GET ../blockchain/token
     "Extension": "blockchain/token"
 }
 ```
+
+## Testing
+
+- Unit tests [COMING SOON]
+- A test Javaascript file has been added [here](https://github.com/mshrm-studio/blockchain-signing-jwt/blob/main/Blockchain.Signing.Auth/Blockchain.Signing.Auth/JS/get-signature.js) to generate a signature using Metamask
