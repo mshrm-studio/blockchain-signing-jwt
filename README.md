@@ -12,12 +12,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services/config to the container.
 builder.AddBlockchainSignatureVerification(options => builder.Configuration.GetSection("TokenGenerationOptions").Bind(options));
 
-....
+.....
+```
 
+```
 var app = builder.Build();
 
 // Expose endpoint for getting token
-app.AddBlockchainTokenIssuanceEndpoint(x => { });
+app.AddBlockchainTokenIssuanceEndpoint( builder.Configuration.GetSection("TokenEndpointOptions").Bind(options));
 
 ....
 ```
@@ -27,8 +29,13 @@ app.AddBlockchainTokenIssuanceEndpoint(x => { });
 ```
 GET ../blockchain/token
 {
+    // The message must be a datetime in this format. This (NOW) must be sent within the threshold mentioned in config below. 
     "raw_message":"2024-12-23T11:20:20.682Z",
+
+    // A signed message (the plain text sent above). 
     "signature": "0x8b93726dc41f8a704b12f93349c471c605e9c1ea60a4302d85128b486e4723d94be330bc6b0238cf246e6ebfe7e95c532bf4b461ad424900b110f87f952a89c81c",
+
+    // The network type to check signing for
     "network": "Ethereum"
 }
 ```
@@ -47,13 +54,13 @@ GET ../blockchain/token
 ### Token Generation Options
 ```
 {
-    // This is the key used to generaate the token (private key). The default is set below: <b>CHANGE THIS!</b>
+    // This is the key used to generaate the token (private key).
     "Secret": "8a1dd1f0-dc55-4e0e-91a0-81fe44417661",
 
-    // This is the token expiry time. The default is set below:
+    // This is the token expiry time. 
     "ExpiresInMinutes": 60,
 
-    // This is threshold for the current time - when a message has been generated (message contents). The default is set below:
+    // This is threshold for the current time - when a message has been generated (message contents).
     "ExpiresThresholdInSeconds": 30,
 
     // The issuer of the token
