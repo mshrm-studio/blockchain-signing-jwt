@@ -18,11 +18,10 @@ public static class ApplicationBuilderExtensions
     public static IApplicationBuilder AddBlockchainTokenIssuanceEndpoint(this IApplicationBuilder builder, Action<TokenEndpointOptions> configureOptions)
     {
         var tokenEndpointOptions = Configure(configureOptions);
-        var url = new Uri(tokenEndpointOptions.Extension);
 
         builder.UseEndpoints(endpoints =>
         {
-            endpoints.MapPost(url.ToString(), async ([FromBody]TokenQuery request, HttpContext httpContext) =>
+            endpoints.MapPost(tokenEndpointOptions.Extension, async ([FromBody]TokenQuery request, HttpContext httpContext) =>
             {
                 var handler = httpContext.RequestServices.GetRequiredService<BlockchainMessageTokenQueryHandler>();
 
