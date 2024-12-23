@@ -4,6 +4,13 @@
 
 This is adds an endpoint to your project that will support the use of blockchain signatures as username/password to generate a JWT. This JWT can then be used to login to your app.
 
+## Currently Supported Signings
+
+- Ethereum -> "Ethereum"
+- Bitcoin -> "Bitcoin" [COMING SOON]
+- Solana -> "Solana" [COMING SOON]
+- Ton -> "Ton" [COMING SOON]
+  
 ## Usage
 
 ```
