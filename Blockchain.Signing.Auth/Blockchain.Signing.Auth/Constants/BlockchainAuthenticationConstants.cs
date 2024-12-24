@@ -6,15 +6,17 @@ using System.Threading.Tasks;
 
 namespace Blockchain.Signing.Auth.Constants;
 
-public class BlockchainAuthenticationConstants
+public static class BlockchainAuthenticationConstants
 {
-    public const string BlockchainAuthenticateScheme = "BlockchainSignature";
-    public const string BlockchainChallengeScheme = "BlockchainSignature";
+    public static string BlockchainAuthenticateScheme = "BlockchainSignature";
+    public static string BlockchainChallengeScheme = "BlockchainSignature";
+    public static string BlockchainAuthenticationTypeHeader = "X-Blockchain-Type";
 
-    public const string BlockchainAuthenticationTypeHeader = "X-Blockchain-Type";
-
-    public class Blockchain
+    public static class BlockChains
     {
-        public const string Ethereum = "Ethereum";
+        public static string Ethereum = "Ethereum";
+        public static string Solana = "Solana";
     }
 }
+
+

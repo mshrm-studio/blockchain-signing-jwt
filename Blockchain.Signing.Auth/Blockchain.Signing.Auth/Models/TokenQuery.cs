@@ -18,5 +18,8 @@ namespace Blockchain.Signing.Auth.Models
 
         [JsonPropertyName("raw_message")]
         public required DateTime RawMessage { get; init; }
+
+        [JsonPropertyName("public_key")]
+        public string? PublicKey { get; init; }
     }
 }

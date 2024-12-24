@@ -24,7 +24,8 @@ public static class WebApplicationBuilderExtensions
         builder.Services.AddTransient<BlockchainMessageTokenQueryHandler>();
 
         builder.Services.AddKeyedTransient<ISignatureService, EthereumSignatureService>("Ethereum");
-
+        builder.Services.AddKeyedTransient<ISignatureService, SolanaSignatureService>("Solana");
+        
         return builder;
     }
 }
