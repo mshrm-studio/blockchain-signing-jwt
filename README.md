@@ -36,7 +36,7 @@ builder.AddBlockchainSignatureVerification(options => builder.Configuration.GetS
 var app = builder.Build();
 
 // Expose endpoint for getting token
-app.AddBlockchainTokenIssuanceEndpoint( builder.Configuration.GetSection("TokenEndpointOptions").Bind(options));
+app.AddBlockchainTokenIssuanceEndpoint(options => builder.Configuration.GetSection("TokenEndpointOptions").Bind(options));
 
 ....
 ```
