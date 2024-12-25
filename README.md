@@ -7,8 +7,8 @@ This is adds an endpoint to your project that will support the use of blockchain
 ## Currently Supported Signings
 
 - Ethereum -> "Ethereum"
+- Solana -> "Solana"
 - Bitcoin -> "Bitcoin" [COMING SOON]
-- Solana -> "Solana" [COMING SOON]
 - Ton -> "Ton" [COMING SOON]
 
 ## Extensibility
