@@ -1,4 +1,6 @@
-﻿using Blockchain.Signing.Auth.Signing.Interfaces;
+﻿using Blockchain.Signing.Auth.Exceptions;
+using Blockchain.Signing.Auth.Models.Enums;
+using Blockchain.Signing.Auth.Signing.Interfaces;
 using Microsoft.Extensions.Logging;
 using Nethereum.Signer;
 using Org.BouncyCastle.Crypto.Parameters;
@@ -49,8 +51,13 @@ public class SolanaSignatureService : ISignatureService
         }
     }
 
-    public bool GetAddressFromSignature(string message, string signature, out string? address)
+    public bool VerifyAndRecoverPublicKeyFromSignature(string message, string signature, out string? address)
     {
-        throw new NotImplementedException();
+        throw new DoesntSupportRecoverableException();
+    }
+
+    public SupportedMethod GetSupportedMethod()
+    {
+        return SupportedMethod.Verify;
     }
 }

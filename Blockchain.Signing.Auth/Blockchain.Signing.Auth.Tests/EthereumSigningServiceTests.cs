@@ -15,7 +15,7 @@ namespace Blockchain.Signing.Auth.Tests
             var mockedLogger = new Mock<ILogger<EthereumSignatureService>>();
             var ethereumSignatureService = new EthereumSignatureService(mockedLogger.Object);
 
-            var result = ethereumSignatureService.GetAddressFromSignature(message, signature, out var address);
+            var result = ethereumSignatureService.VerifyAndRecoverPublicKeyFromSignature(message, signature, out var address);
             
             Assert.IsTrue(result);
             Assert.AreEqual(expectedAddress, address, ignoreCase: true);

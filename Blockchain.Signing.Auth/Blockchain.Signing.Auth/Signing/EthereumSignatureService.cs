@@ -1,4 +1,5 @@
-﻿using Blockchain.Signing.Auth.Signing.Interfaces;
+﻿using Blockchain.Signing.Auth.Models.Enums;
+using Blockchain.Signing.Auth.Signing.Interfaces;
 using Microsoft.Extensions.Logging;
 using Nethereum.Signer;
 using System;
@@ -35,7 +36,7 @@ public class EthereumSignatureService : ISignatureService
         }
     }
 
-    public bool GetAddressFromSignature(string message, string signature, out string? address)
+    public bool VerifyAndRecoverPublicKeyFromSignature(string message, string signature, out string? address)
     {
         address = null;
 
@@ -52,5 +53,10 @@ public class EthereumSignatureService : ISignatureService
 
             return false;
         }
+    }
+
+    public SupportedMethod GetSupportedMethod()
+    {
+        return SupportedMethod.VerifyAndRecoverPublicKey;
     }
 }
