@@ -49,7 +49,7 @@ internal class RefreshTokenQueryHandler
         var context = new RefreshTokenGenerationContext(request.Token, parsedToken.Address, parsedToken.Network,
             _contextAccessor.HttpContext);
 
-        var success = await _tokenGenerationOptions.Events.OnRefreshTokenValidation(context);
+        var success = await _tokenGenerationOptions.Events.IsRefreshTokenValid(context);
         if (!success)
         {
             throw new FailedToVerifyException("Refresh token was not validated.");

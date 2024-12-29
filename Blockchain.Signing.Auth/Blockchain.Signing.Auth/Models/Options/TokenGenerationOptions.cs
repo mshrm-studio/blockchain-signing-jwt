@@ -23,8 +23,8 @@ public sealed class TokenGenerationEvents
 {
     public Func<TokenGenerationContext, Task> PostSignatureValidation { get; set; } 
         = context => Task.CompletedTask;
-    public Func<RefreshTokenGenerationContext, Task<bool>> OnRefreshTokenValidation { get; set; }
+    public Func<RefreshTokenGenerationContext, Task<bool>> IsRefreshTokenValid { get; set; }
         = context => throw new NotImplementedException(
-            $"{nameof(TokenGenerationOptions)}.{nameof(TokenGenerationEvents)}.{nameof(OnRefreshTokenValidation)} has no delegate registered. Please refer to documentation.");
+            $"{nameof(TokenGenerationOptions)}.{nameof(TokenGenerationEvents)}.{nameof(IsRefreshTokenValid)} has no delegate registered. Please refer to documentation.");
 }
 
