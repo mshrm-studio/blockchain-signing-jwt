@@ -16,7 +16,7 @@ This is adds an endpoint to your project that will support the use of blockchain
 - Create a new class that implements ISignatureService
 - Add to DI as aa keyed service ie.
 ```
-// Note: MyCustomNetworkSignatureService implements ISignatureService
+// MyCustomNetworkSignatureService implements ISignatureService
 builder.Services.AddCustomSignatureService<MyCustomNetworkSignatureService>("MyCustomNetwork");
 ```
 
