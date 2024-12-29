@@ -4,10 +4,6 @@
 
 This is adds an endpoint to your project that will support the use of blockchain signatures/public key to generate a JWT. This JWT can then be used to login to your app.
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/4c363e6e-a6f9-4851-8a69-1563847c6a10" alt="Workflow"/>
-</p>
-
 ## Currently Supported Signings
 
 - Ethereum,Polygon (EVM based) -> "Evm"
@@ -161,3 +157,24 @@ GET ../blockchain/token
 
 - Unit tests
 - A test Javascript file has been added [here](https://github.com/mshrm-studio/blockchain-signing-jwt/blob/main/Blockchain.Signing.Auth/Blockchain.Signing.Auth/JS/get-signature.js) to generate a signature using Metamask
+
+## Workflow
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/4c363e6e-a6f9-4851-8a69-1563847c6a10" alt="Workflow"/>
+</p>
+
+<!--
+https://sequencediagram.org/
+title Workflow
+
+User->Client: Sign to login
+Client->Client: Generate message (UTC now)
+Client->Client: Launch wallet to sign
+User->Client: Sign message
+Client->API: Generate token from signature
+API->API: Validate signature is from signed message/public key
+API->API: Validate message time is within threshold
+API->API: Add claims and generate token
+API->Client: Return token
+-->
