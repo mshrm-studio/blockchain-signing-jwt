@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Blockchain.Signing.Auth.Exceptions
 {
-    internal class NetworkNotRegisteredException : BlockchainAuthenticationException
+    public sealed class NetworkNotRegisteredException : BlockchainAuthenticationException
     {
         internal NetworkNotRegisteredException(string? message = null) : base(message) { }
     }

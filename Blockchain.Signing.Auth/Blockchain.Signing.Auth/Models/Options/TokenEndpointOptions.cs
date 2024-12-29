@@ -10,5 +10,6 @@ public sealed record TokenEndpointOptions
 {
     public TokenEndpointOptions() { }
 
-    public string Extension { get; set; } = "blockchain/token";
+    public string TokenExtension { get; set; } = "blockchain/token";
+    public string RefreshTokenExtension { get; set; } = "blockchain/refresh-token";
 }

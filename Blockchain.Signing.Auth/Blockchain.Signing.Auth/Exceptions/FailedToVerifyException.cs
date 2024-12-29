@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Blockchain.Signing.Auth.Exceptions
 {
-    internal class FailedToVerifyException : BlockchainAuthenticationException
+    public sealed class FailedToVerifyException : BlockchainAuthenticationException
     {
         internal FailedToVerifyException(string? message = null) : base(message) { }
     }

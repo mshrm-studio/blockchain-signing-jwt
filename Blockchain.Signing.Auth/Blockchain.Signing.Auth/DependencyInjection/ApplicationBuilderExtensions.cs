@@ -21,9 +21,19 @@ public static class ApplicationBuilderExtensions
 
         builder.UseEndpoints(endpoints =>
         {
-            endpoints.MapPost(tokenEndpointOptions.Extension, async ([FromBody]TokenQuery request, HttpContext httpContext) =>
+            endpoints.MapPost(tokenEndpointOptions.TokenExtension, async ([FromBody]TokenQuery request, HttpContext httpContext) =>
             {
                 var handler = httpContext.RequestServices.GetRequiredService<BlockchainMessageTokenQueryHandler>();
+
+                return await handler.HandleAsync(request);
+            });
+        });
+
+        builder.UseEndpoints(endpoints =>
+        {
+            endpoints.MapPost(tokenEndpointOptions.RefreshTokenExtension, async ([FromBody] RefreshTokenQuery request, HttpContext httpContext) =>
+            {
+                var handler = httpContext.RequestServices.GetRequiredService<RefreshTokenQueryHandler>();
 
                 return await handler.HandleAsync(request);
             });

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Blockchain.Signing.Auth.Exceptions
 {
-    public sealed class MessageExpiredException : BlockchainAuthenticationException
+    public sealed class ClaimDoesntExistException : BlockchainAuthenticationException
     {
-        internal MessageExpiredException(string? message = null) : base(message) { }
+        public ClaimDoesntExistException(string? message = null) : base(message) { }
     }
 }

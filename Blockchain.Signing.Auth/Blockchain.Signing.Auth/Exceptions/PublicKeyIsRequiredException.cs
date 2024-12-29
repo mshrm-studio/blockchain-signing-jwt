@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Blockchain.Signing.Auth.Exceptions;
-public class PublicKeyIsRequiredException : BlockchainAuthenticationException
+public sealed class PublicKeyIsRequiredException : BlockchainAuthenticationException
 {
     public PublicKeyIsRequiredException(string? message = null) : base(message) { }
 }

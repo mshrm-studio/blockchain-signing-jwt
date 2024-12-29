@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Blockchain.Signing.Auth.Exceptions
 {
-    internal class FailedToParseMessageException : BlockchainAuthenticationException
+    public sealed class FailedToParseMessageException : BlockchainAuthenticationException
     {
         internal FailedToParseMessageException(string? message = null) : base(message) { }
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Blockchain.Signing.Auth.Exceptions
 {
-    internal class DoesntSupportRecoverableException : BlockchainAuthenticationException
+    public sealed class DoesntSupportRecoverableException : BlockchainAuthenticationException
     {
         internal DoesntSupportRecoverableException(string? message = null) : base(message) { }
     }

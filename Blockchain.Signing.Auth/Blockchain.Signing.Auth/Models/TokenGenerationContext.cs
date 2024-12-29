@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Blockchain.Signing.Auth.Models;
 
-public class TokenGenerationContext
+public sealed class TokenGenerationContext
 {
     public List<Claim> Claims { get; internal set; } = new List<Claim>();    
     public HttpContext HttpContext { get; internal set; }

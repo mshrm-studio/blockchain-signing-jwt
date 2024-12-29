@@ -79,7 +79,7 @@ namespace Blockchain.Signing.Auth.Handlers
         {
             var context = new TokenGenerationContext(publicKey, network, httpContext);
 
-            await _tokenGenerationOptions.Events.OnSignatureValidation(context);
+            await _tokenGenerationOptions.Events.PostSignatureValidation(context);
 
             return _blockchainJwtService.GenerateJwt(context);
         }
