@@ -56,6 +56,8 @@ app.AddBlockchainTokenIssuanceEndpoint(options => builder.Configuration.GetSecti
 ....
 ```
 
+## Request
+
 ### Signed Message
 
 The signed message must be a UTC date time string in the format 
@@ -63,7 +65,7 @@ The signed message must be a UTC date time string in the format
 yyyy-MM-ddTHH:mm:ss.fffZ
 '''
 
-## Request Body
+### Request Body
 
 ```
 GET ../blockchain/token
@@ -76,6 +78,10 @@ GET ../blockchain/token
 
     // The network type to check signing for
     "network": "Evm"
+
+    // If the networks algorithm does NOT support recoverable public keys then this should be populated.
+    // EVM signings support recoverable keys so we do NOT need to pass with this request
+    "address": null
 }
 ```
 
