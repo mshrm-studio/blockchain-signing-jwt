@@ -6,10 +6,10 @@ This is adds an endpoint to your project that will support the use of blockchain
 
 ## Currently Supported Signings
 
-- Ethereum -> "Ethereum"
+- Ethereum,Polygon (EVM based) -> "Evm"
 - Solana -> "Solana"
 - Bitcoin -> "Bitcoin" [COMING SOON]
-- Ton -> "Ton" [COMING SOON]
+- Ton -> "Ton" [COMING SOON - has some bugs]
 
 ## Extensibility
 
@@ -67,7 +67,7 @@ GET ../blockchain/token
     "signature": "0x8b93726dc41f8a704b12f93349c471c605e9c1ea60a4302d85128b486e4723d94be330bc6b0238cf246e6ebfe7e95c532bf4b461ad424900b110f87f952a89c81c",
 
     // The network type to check signing for
-    "network": "Ethereum"
+    "network": "Evm"
 }
 ```
 
