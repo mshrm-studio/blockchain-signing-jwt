@@ -16,10 +16,11 @@ This is adds an endpoint to your project that will support the use of blockchain
 - Create a new class that implements ISignatureService
 - Add to DI as aa keyed service ie.
 ```
-builder.Services.AddKeyedTransient<ISignatureService, EthereumSignatureService>("Ethereum");
+// Note: MyCustomNetworkSignatureService implements ISignatureService
+builder.Services.AddCustomSignatureService<MyCustomNetworkSignatureService>("MyCustomNetwork");
 ```
 
-Note: "Ethereum" will be what you use for "network" in the token request outlined below.
+Note: "MyCustomNetwork" will be what you use for "network" in the token request outlined below.
 
 ## Usage
 
