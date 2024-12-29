@@ -21,6 +21,6 @@ public sealed record TokenGenerationOptions
 
 public sealed class TokenGenerationEvents
 {
-    public Func<TokenGenerationContext, Task> OnGeneration { get; set; } = context => Task.CompletedTask;
+    public Func<TokenGenerationContext, Task> OnSignatureValidation { get; set; } = context => Task.CompletedTask;
 }
 

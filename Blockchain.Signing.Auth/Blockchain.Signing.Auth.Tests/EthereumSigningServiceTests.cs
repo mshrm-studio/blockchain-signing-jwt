@@ -14,8 +14,8 @@ namespace Blockchain.Signing.Auth.Tests
         [DataRow("2024-12-24T10:13:42.077Z", "0x8d9843ea6ad748d0df16a9aa94a91b47dd547065eaa1975a7385ec513597a513247049b5d120961bd8c767a7bef437adbd0b13f3c5084f73c15f07c22ada374a1c", "0xbd7dacf31192157f4ce52e1644fef6baac0e77c2")]
         public async Task GetAddressFromSignatureTest(string message, string signature, string expectedAddress)
         {
-            var mockedLogger = new Mock<ILogger<EthereumSignatureService>>();
-            var ethereumSignatureService = new EthereumSignatureService(mockedLogger.Object);
+            var mockedLogger = new Mock<ILogger<EvmSignatureService>>();
+            var ethereumSignatureService = new EvmSignatureService(mockedLogger.Object);
 
             var result = await ethereumSignatureService.VerifyAndRecoverPublicKeyFromSignatureAsync(message, signature);
             
@@ -28,8 +28,8 @@ namespace Blockchain.Signing.Auth.Tests
         [DataRow("2024-12-24T10:13:42.077Z", "0x8d9843ea6ad748d0df16a9aa94a91b47dd547065eaa1975a7385ec513597a513247049b5d120961bd8c767a7bef437adbd0b13f3c5084f73c15f07c22ada374a1c", "0xbd7dacf31192157f4ce52e1644fef6baac0e77c2")]
         public async Task VerifySignatureTest(string message, string signature, string expectedAddress)
         {
-            var mockedLogger = new Mock<ILogger<EthereumSignatureService>>();
-            var ethereumSignatureService = new EthereumSignatureService(mockedLogger.Object);
+            var mockedLogger = new Mock<ILogger<EvmSignatureService>>();
+            var ethereumSignatureService = new EvmSignatureService(mockedLogger.Object);
 
             var result = await ethereumSignatureService.VerifySignatureAsync(message, signature, expectedAddress);
 

@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Blockchain.Signing.Auth.Signing;
 
-public class EthereumSignatureService : ISignatureService
+public class EvmSignatureService : ISignatureService
 {
-    private readonly ILogger<EthereumSignatureService> _logger; 
+    private readonly ILogger<EvmSignatureService> _logger; 
 
-    public EthereumSignatureService(ILogger<EthereumSignatureService> logger)
+    public EvmSignatureService(ILogger<EvmSignatureService> logger)
     {
         _logger = logger;
     }

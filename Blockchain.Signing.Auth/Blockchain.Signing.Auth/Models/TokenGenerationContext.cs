@@ -11,23 +11,26 @@ namespace Blockchain.Signing.Auth.Models;
 
 public class TokenGenerationContext
 {
-    public List<Claim> Claims { get; private set; } = new List<Claim>();    
-    public HttpContext HttpContext { get; private set; }
-    public string PublicKey { get; private set; }
+    public List<Claim> Claims { get; internal set; } = new List<Claim>();    
+    public HttpContext HttpContext { get; internal set; }
+    public string Address { get; internal set; }
+    public string Network { get; internal set; }
 
-    public TokenGenerationContext(string publicKey, HttpContext httpContext,
+    public TokenGenerationContext(string publicKey, string network, HttpContext httpContext,
         List<Claim>? claims = null)
     {
-        this.PublicKey = publicKey;
+        this.Address = publicKey;
+        this.Network = network;
         this.HttpContext = httpContext;
 
-        AddPublicKeyClaim(publicKey);
+        AddDefaultClaims();
         AddClaims(claims);
     }
 
-    private void AddPublicKeyClaim(string publicKey)
+    private void AddDefaultClaims()
     {
-        Claims.Add(new Claim(BlockchainAuthenticationClaimTypes.PublicKey, publicKey));
+        Claims.Add(new Claim(BlockchainAuthenticationClaimTypes.Address, Address));
+        Claims.Add(new Claim(BlockchainAuthenticationClaimTypes.Network, Network));
     }
 
     private void AddClaims(List<Claim>? claims)

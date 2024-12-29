@@ -29,27 +29,32 @@ namespace Blockchain.Signing.Auth.Handlers
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IBlockchainJwtService _blockchainJwtService;
-        private readonly HttpContext _httpContext;
+        private readonly IHttpContextAccessor _contextAccessor;
         private readonly TokenGenerationOptions _tokenGenerationOptions;
 
         public BlockchainMessageTokenQueryHandler(
             IServiceProvider serviceProvider,
+            IHttpContextAccessor contextAccessor,
             IBlockchainJwtService blockchainJwtService,
-            HttpContext httpContext,
             IOptions<TokenGenerationOptions> tokenGenerationOptions
         )
         {
             _serviceProvider = serviceProvider;
+            _contextAccessor = contextAccessor;
             _blockchainJwtService = blockchainJwtService;
-            _httpContext = httpContext;
             _tokenGenerationOptions = tokenGenerationOptions.Value;
         }
 
         internal async Task<TokenResponse> HandleAsync(TokenQuery request)
         {
-            var publicKey = await GetVerifiedPublicKeyAsync(request.Network.Trim(), request.Signature,
-                request.RawMessage.ToString(BlockchainAuthenticationConstants.MessageDateFormat, CultureInfo.InvariantCulture), request.PublicKey);
-            if (string.IsNullOrEmpty(publicKey))
+            if (_contextAccessor.HttpContext == null)
+            {
+                throw new NullReferenceException("Http context is null");
+            }
+
+            var address = await GetVerifiedAddressAsync(request.Network.Trim(), request.Signature,
+                request.RawMessage.ToString(BlockchainAuthenticationConstants.MessageDateFormat, CultureInfo.InvariantCulture), request.Address);
+            if (string.IsNullOrEmpty(address))
             {
                 throw new FailedToVerifyException();
             }
@@ -59,7 +64,7 @@ namespace Blockchain.Signing.Auth.Handlers
                 throw new MessageExpiredException("The message has expired.");
             }
 
-            var token = await GenerateTokenAsync(publicKey);
+            var token = await GenerateTokenAsync(address.Trim(), request.Network.Trim(), _contextAccessor.HttpContext);
 
             return new TokenResponse()
             {
@@ -68,16 +73,16 @@ namespace Blockchain.Signing.Auth.Handlers
             };
         }
 
-        internal async Task<Jwt> GenerateTokenAsync(string publicKey)
+        internal async Task<Jwt> GenerateTokenAsync(string publicKey, string network, HttpContext httpContext)
         {
-            var context = new TokenGenerationContext(publicKey, _httpContext);
+            var context = new TokenGenerationContext(publicKey, network, httpContext);
 
-            await _tokenGenerationOptions.Events.OnGeneration(context);
+            await _tokenGenerationOptions.Events.OnSignatureValidation(context);
 
             return _blockchainJwtService.GenerateJwt(context);
         }
 
-        internal async Task<string?> GetVerifiedPublicKeyAsync(string network, string signature, string message, string? publicKey)
+        internal async Task<string?> GetVerifiedAddressAsync(string network, string signature, string message, string? publicKey)
         {
             var signingService = _serviceProvider.GetKeyedService<ISignatureService>(network);
             if (signingService is null)

@@ -19,6 +19,6 @@ public record TokenQuery
     [JsonPropertyName("raw_message")]
     public required DateTime RawMessage { get; init; }
 
-    [JsonPropertyName("public_key")]
-    public string? PublicKey { get; init; }
+    [JsonPropertyName("address")]
+    public string? Address { get; init; }
 }

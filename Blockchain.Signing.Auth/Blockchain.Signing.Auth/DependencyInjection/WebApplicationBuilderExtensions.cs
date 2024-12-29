@@ -26,10 +26,12 @@ public static class WebApplicationBuilderExtensions
 
         builder.Services.AddTransient<BlockchainMessageTokenQueryHandler>();
 
-        builder.Services.AddKeyedTransient<ISignatureService, EthereumSignatureService>("Ethereum");
+        builder.Services.AddKeyedTransient<ISignatureService, EvmSignatureService>("Ethereum");
         builder.Services.AddKeyedTransient<ISignatureService, SolanaSignatureService>("Solana");
         //TODO: Fix
         //builder.Services.AddKeyedTransient<ISignatureService, TonSignatureService>("Ton");
+
+        builder.Services.AddHttpContextAccessor();
 
         return builder;
     }

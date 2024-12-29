@@ -8,6 +8,7 @@ namespace Blockchain.Signing.Auth.Constants
 {
     public class BlockchainAuthenticationClaimTypes
     {
-        public const string PublicKey = "pubKey";
+        public const string Address = "address";
+        public const string Network = "network";
     }
 }
