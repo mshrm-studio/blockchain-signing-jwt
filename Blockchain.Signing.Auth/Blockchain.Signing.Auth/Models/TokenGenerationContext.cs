@@ -15,6 +15,7 @@ public class TokenGenerationContext
     public HttpContext HttpContext { get; internal set; }
     public string Address { get; internal set; }
     public string Network { get; internal set; }
+    public string? RefreshToken { get; set; }
 
     public TokenGenerationContext(string publicKey, string network, HttpContext httpContext,
         List<Claim>? claims = null)

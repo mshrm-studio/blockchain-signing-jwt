@@ -39,6 +39,6 @@ public class BlockchainJwtService : IBlockchainJwtService
         var expiresAt = (tokenDescriptor.Expires.Value - DateTime.UtcNow);
         var token = tokenHandler.CreateToken(tokenDescriptor);
 
-        return new Jwt(tokenHandler.WriteToken(token), (long)expiresAt.TotalSeconds);
+        return new Jwt(tokenHandler.WriteToken(token), context.RefreshToken, (long)expiresAt.TotalSeconds);
     }
 }

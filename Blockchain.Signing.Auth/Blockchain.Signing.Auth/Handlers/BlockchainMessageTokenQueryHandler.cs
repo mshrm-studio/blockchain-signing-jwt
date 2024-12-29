@@ -69,6 +69,7 @@ namespace Blockchain.Signing.Auth.Handlers
             return new TokenResponse()
             {
                 Token = token.Token,
+                RefreshToken = token.RefreshToken,
                 ExpiresAt = token.ExpiresAt
             };
         }
