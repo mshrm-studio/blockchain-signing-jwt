@@ -71,7 +71,7 @@ const signMessage = async () => {
 (async () => {
     const signatureResult = await signMessage();
     const signature = signatureResult.data.signature;
-    const public_key = signatureResult.data.address;
+    const address = signatureResult.data.address;
     const network = 'Ton';
     const raw_message = signatureResult.data.message;
 
@@ -81,7 +81,7 @@ const signMessage = async () => {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ raw_message, signature, network, public_key }),
+        body: JSON.stringify({ raw_message, signature, network, address }),
     });
 
     const result = await response.json();

@@ -6,7 +6,7 @@
             const accounts = await window.ethereum.request({ method: 'eth_accounts' });
             const account = accounts[0];
             const raw_message = new Date().toISOString();
-            const network = "Ethereum";
+            const network = "Evm";
 
             const signature = await window.ethereum.request({
                 method: 'personal_sign',

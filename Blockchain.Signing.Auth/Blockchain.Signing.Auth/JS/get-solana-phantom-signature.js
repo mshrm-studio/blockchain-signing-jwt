@@ -29,10 +29,10 @@ const signMessage = async () => {
         const encodedMessage = new TextEncoder().encode(raw_message);
         const signedMessage = await provider.signMessage(encodedMessage, "utf8");
         const network = "Solana";
-        const public_key = resp.publicKey.toString();
+        const address = resp.publicKey.toString();
         const signature = toHexString(signedMessage.signature);
 
-        console.log("Public key: " + public_key);
+        console.log("Public key: " + address);
         console.log("Signature (hex): " + signature);
         console.log("Message: " + raw_message);
 
@@ -42,7 +42,7 @@ const signMessage = async () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ raw_message, signature, network, public_key }),
+          body: JSON.stringify({ raw_message, signature, network, address }),
         });
     
         const result = await response.json();
