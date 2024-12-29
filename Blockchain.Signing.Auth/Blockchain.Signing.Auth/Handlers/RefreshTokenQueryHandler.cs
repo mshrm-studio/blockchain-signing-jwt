@@ -46,7 +46,7 @@ internal class RefreshTokenQueryHandler
 
         var parsedToken = ParseToken(request.Token);
 
-        var context = new RefreshTokenGenerationContext(parsedToken.Address, parsedToken.Network,
+        var context = new RefreshTokenGenerationContext(request.Token, parsedToken.Address, parsedToken.Network,
             _contextAccessor.HttpContext);
 
         var success = await _tokenGenerationOptions.Events.OnRefreshTokenValidation(context);
@@ -55,7 +55,8 @@ internal class RefreshTokenQueryHandler
             throw new FailedToVerifyException("Refresh token was not validated.");
         }
 
-        var token = await GenerateTokenAsync(parsedToken.Address, parsedToken.Network, _contextAccessor.HttpContext);
+        var token = await GenerateTokenAsync(parsedToken.Address, 
+            parsedToken.Network, _contextAccessor.HttpContext);
 
         return new TokenResponse()
         {
