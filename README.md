@@ -75,8 +75,26 @@ GET ../blockchain/token
 
 ```
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwdWJLZXkiOiIweDUwMTE2Y0E2MDg0OUNCZmMxRDMwYjUwZEVkOGIyZGJCMThEMjFBRkEiLCJuYmYiOjE3MzQ5NTI4MzcsImV4cCI6MTczNDk1NjQzNywiaWF0IjoxNzM0OTUyODM3LCJpc3MiOiJodHRwczovL3NldC1tZSIsImF1ZCI6Imh0dHBzOi8vc2V0LW1lLXRvbyJ9.RNiEdAtaZYRzOUkifLc8nCAUZEGJskwrQLVwFx-X9zY",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZGRyZXNzIjoiMHgxRkJFM0RmN0VlQmY4OTRmODNjMGVFMmIxYTEwZDFCMWE1Y2RhNDU0IiwibmV0d29yayI6IkV2bSIsInRlc3QiOiJ0ZXN0MSIsIm5iZiI6MTczNTQ2NDY1MiwiZXhwIjoxNzM1NDY4MjUyLCJpYXQiOjE3MzU0NjQ2NTIsImlzcyI6Imh0dHBzOi8vc2V0LW1lIiwiYXVkIjoiaHR0cHM6Ly9zZXQtbWUtdG9vIn0.OFpjY6XxilHHz7ei6hbTW50VF-DfurDysNC06DMzTig",
+    "refresh_token": null // W.I.P
     "expires_at": 3599
+}
+```
+
+```
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+{
+  "address": "0x1FBE3Df7EeBf894f83c0eE2b1a10d1B1a5cda454",
+  "network": "Evm",
+  "test": "test1", // Added custom via "OnSignatureValidation" event
+  "nbf": 1735464652,
+  "exp": 1735468252,
+  "iat": 1735464652,
+  "iss": "https://set-me",
+  "aud": "https://set-me-too"
 }
 ```
 
