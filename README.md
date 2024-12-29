@@ -27,7 +27,21 @@ Note: "Ethereum" will be what you use for "network" in the token request outline
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services/config to the container.
-builder.AddBlockchainSignatureVerification(options => builder.Configuration.GetSection("TokenGenerationOptions").Bind(options));
+builder.AddBlockchainSignatureVerification(options => 
+{
+    // Setting options from config
+    builder.Configuration.GetSection("TokenGenerationOptions").Bind(options);
+
+    // Add event to add additional claims
+    options.Events.OnGeneration = (context) =>
+    {
+        var address = context.Address;
+
+        context.Claims.Add(new System.Security.Claims.Claim("test", "test1"));
+
+        return Task.CompletedTask;
+    };
+});
 
 .....
 ```
