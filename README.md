@@ -56,6 +56,13 @@ app.AddBlockchainTokenIssuanceEndpoint(options => builder.Configuration.GetSecti
 ....
 ```
 
+### Signed Message
+
+The signed message must be a UTC date time string in the format 
+'''
+yyyy-MM-ddTHH:mm:ss.fffZ
+'''
+
 ## Request Body
 
 ```
