@@ -34,20 +34,20 @@ builder.AddBlockchainSignatureVerification(options =>
     builder.Configuration.GetSection("TokenGenerationOptions").Bind(options);
 
     // Add event once the signing has been validated
-    options.Events.OnSignatureValidation = (context) =>
+    options.Events.PostSignatureValidation = (context) =>
     {
         var validatedAddress = context.Address;
         var network = context.Network;
 
         // We can add additional claims to the JWT ie.
-        var soulBoundToken = _service.GetSoulBoundToken(validatedAddress, network);
+        var soulBoundToken = service.GetSoulBoundToken(validatedAddress, network);
         if (!string.IsNullOrEmpty(soulBoundToken.Name))
         {
             context.Claims.Add(new System.Security.Claims.Claim("accountname", soulBoundToken.Name));
         }
 
         // We can handle refresh token ie. 
-        context.RefreshToken = _service.GenerateRefreshToken(validatedAddress);
+        context.RefreshToken = service.GenerateRefreshToken(validatedAddress);
 
         // etc.
 
@@ -151,6 +151,39 @@ GET ../blockchain/token
     // This is the extension of your app where the endpoint to generate this token will live. The default is set below:
     "Extension": "blockchain/token"
 }
+```
+
+### Refresh Token Endpoint Setup
+
+The following endpoint has been added but needs further setup before can be used
+```
+../blockchain/refresh-token
+```
+
+Here is an example setup (OnRefreshTokenValidation event)
+```
+// Add services to the container.
+builder.AddBlockchainSignatureVerification(options => 
+{
+    // Setting options from config
+    builder.Configuration.GetSection("TokenGenerationOptions").Bind(options);
+
+    options.Events.OnRefreshTokenValidation = (context) =>
+    {
+        // Validate refresh token against user
+        var validToken = ValidateTokenExceptExpires(context.Token);
+        if (!validToken)
+        {
+            throw new Exception();
+        }
+
+        // Validate refresh token
+        var validRefreshToken = ValidateRefreshToken(context.Address, context.RefreshToken);
+
+        return Task.FromResult(validRefreshToken);
+    };
+
+....
 ```
 
 ## Testing
