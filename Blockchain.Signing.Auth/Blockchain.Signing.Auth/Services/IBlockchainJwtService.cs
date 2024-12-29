@@ -1,5 +1,4 @@
 ﻿using Blockchain.Signing.Auth.Models;
-using Blockchain.Signing.Auth.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;

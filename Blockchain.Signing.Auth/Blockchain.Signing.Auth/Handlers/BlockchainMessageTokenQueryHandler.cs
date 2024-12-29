@@ -1,7 +1,6 @@
 ﻿using Blockchain.Signing.Auth.Constants;
 using Blockchain.Signing.Auth.Models;
 using Blockchain.Signing.Auth.Exceptions;
-using Blockchain.Signing.Auth.Options;
 using Blockchain.Signing.Auth.Signing.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -22,6 +21,8 @@ using Blockchain.Signing.Auth.Services;
 using Microsoft.AspNetCore.Http;
 using System.Net.Http;
 using NBitcoin.Secp256k1;
+using Blockchain.Signing.Auth.Models.Options;
+using Blockchain.Signing.Auth.Extensions;
 
 namespace Blockchain.Signing.Auth.Handlers
 {
@@ -59,7 +60,7 @@ namespace Blockchain.Signing.Auth.Handlers
                 throw new FailedToVerifyException();
             }
 
-            if (Math.Abs((DateTime.UtcNow - request.RawMessage).TotalSeconds) > _tokenGenerationOptions.ExpiresThresholdInSeconds)
+            if (request.RawMessage.GetAbsoluteDifferenceInSeconds(DateTime.UtcNow) > _tokenGenerationOptions.ExpiresThresholdInSeconds)
             {
                 throw new MessageExpiredException("The message has expired.");
             }

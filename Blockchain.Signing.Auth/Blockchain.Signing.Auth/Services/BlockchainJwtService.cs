@@ -1,6 +1,6 @@
 ﻿using Blockchain.Signing.Auth.Constants;
 using Blockchain.Signing.Auth.Models;
-using Blockchain.Signing.Auth.Options;
+using Blockchain.Signing.Auth.Models.Options;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -10,6 +10,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Blockchain.Signing.Auth.Extensions;
 
 namespace Blockchain.Signing.Auth.Services;
 
@@ -36,9 +37,9 @@ public class BlockchainJwtService : IBlockchainJwtService
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 
-        var expiresAt = (tokenDescriptor.Expires.Value - DateTime.UtcNow);
+        var expiresAt = tokenDescriptor.Expires.Value.GetAbsoluteDifferenceInSeconds(DateTime.UtcNow);
         var token = tokenHandler.CreateToken(tokenDescriptor);
 
-        return new Jwt(tokenHandler.WriteToken(token), context.RefreshToken, (long)expiresAt.TotalSeconds);
+        return new Jwt(tokenHandler.WriteToken(token), context.RefreshToken, expiresAt);
     }
 }

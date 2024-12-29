@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Blockchain.Signing.Auth.Options;
+namespace Blockchain.Signing.Auth.Models.Options;
 
 public sealed record TokenEndpointOptions
 {

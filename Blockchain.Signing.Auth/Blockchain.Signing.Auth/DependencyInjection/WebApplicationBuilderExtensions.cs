@@ -1,6 +1,6 @@
 ﻿using Blockchain.Signing.Auth.Constants;
 using Blockchain.Signing.Auth.Handlers;
-using Blockchain.Signing.Auth.Options;
+using Blockchain.Signing.Auth.Models.Options;
 using Blockchain.Signing.Auth.Services;
 using Blockchain.Signing.Auth.Signing;
 using Blockchain.Signing.Auth.Signing.Interfaces;

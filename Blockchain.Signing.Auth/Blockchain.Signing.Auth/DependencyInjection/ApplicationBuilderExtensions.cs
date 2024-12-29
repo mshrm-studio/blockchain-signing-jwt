@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Blockchain.Signing.Auth.Options;
+using Blockchain.Signing.Auth.Models.Options;
 
 namespace Blockchain.Signing.Auth.DependencyInjection;
 

@@ -18,9 +18,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Ton.Sdk;
-using Ton.Sdk.Client;
-using Ton.Sdk.Crypto;
 using PublicKey = Solnet.Wallet.PublicKey;
 
 namespace Blockchain.Signing.Auth.Signing;
