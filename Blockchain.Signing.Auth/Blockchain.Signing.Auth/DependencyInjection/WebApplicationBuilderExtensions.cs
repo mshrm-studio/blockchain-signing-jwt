@@ -1,6 +1,7 @@
 ﻿using Blockchain.Signing.Auth.Constants;
 using Blockchain.Signing.Auth.Handlers;
 using Blockchain.Signing.Auth.Options;
+using Blockchain.Signing.Auth.Services;
 using Blockchain.Signing.Auth.Signing;
 using Blockchain.Signing.Auth.Signing.Interfaces;
 using Microsoft.AspNetCore.Authentication;
@@ -21,11 +22,30 @@ public static class WebApplicationBuilderExtensions
     {
         builder.Services.Configure(options);
 
+        builder.Services.AddTransient<IBlockchainJwtService, BlockchainJwtService>();
+
         builder.Services.AddTransient<BlockchainMessageTokenQueryHandler>();
 
         builder.Services.AddKeyedTransient<ISignatureService, EthereumSignatureService>("Ethereum");
         builder.Services.AddKeyedTransient<ISignatureService, SolanaSignatureService>("Solana");
-        
+        //TODO: Fix
+        //builder.Services.AddKeyedTransient<ISignatureService, TonSignatureService>("Ton");
+
+        return builder;
+    }
+
+    /// <summary>
+    /// Add a custom implementation of ISignatureService
+    /// </summary>
+    /// <typeparam name="TImplementation">A class implementing ISignatureService</typeparam>
+    /// <param name="builder">The builder</param>
+    /// <param name="networkName">The network Name (keyed service)</param>
+    /// <returns>The builder</returns>
+    public static WebApplicationBuilder AddCustomSignatureService<TImplementation>(this WebApplicationBuilder builder, string networkName)
+        where TImplementation : class, ISignatureService
+    {
+        builder.Services.AddKeyedTransient<ISignatureService, TImplementation>(networkName);
+
         return builder;
     }
 }

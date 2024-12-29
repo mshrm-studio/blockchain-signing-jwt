@@ -28,7 +28,7 @@ public class SolanaSignatureService : ISignatureService
         _logger = logger;
     }
 
-    public bool VerifySignature(string message, string signature, string address)
+    public async Task<bool> VerifySignatureAsync(string message, string signature, string address)
     {
         try
         {
@@ -51,7 +51,7 @@ public class SolanaSignatureService : ISignatureService
         }
     }
 
-    public bool VerifyAndRecoverPublicKeyFromSignature(string message, string signature, out string? address)
+    public async Task<(bool, string?)> VerifyAndRecoverPublicKeyFromSignatureAsync(string message, string signature)
     {
         throw new DoesntSupportRecoverableException();
     }

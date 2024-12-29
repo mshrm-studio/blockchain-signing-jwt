@@ -10,7 +10,7 @@
 
             const signature = await window.ethereum.request({
                 method: 'personal_sign',
-                params: [message, account],
+                params: [raw_message, account],
             });
 
             console.log("Signature: " + signature);
@@ -18,8 +18,7 @@
             console.log("Message: " + raw_message);
 
             // Send to back-end
-            /*
-            const response = await fetch('/api/verify', {
+            const response = await fetch('http://localhost:5191/blockchain/token', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -29,7 +28,6 @@
 
             const result = await response.json();
             console.log(result);
-            */
 
         } catch (error) {
             console.error(error);

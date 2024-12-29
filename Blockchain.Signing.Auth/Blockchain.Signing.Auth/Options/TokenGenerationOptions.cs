@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Blockchain.Signing.Auth.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,4 +15,12 @@ public sealed record TokenGenerationOptions
     public required int ExpiresThresholdInSeconds { get; init; } = 30;
     public required string Issuer { get; init; } = "https://set-me";
     public required string Audience { get; init; } = "https://set-me-too";
+
+    public required TokenGenerationEvents Events { get; init; } = new TokenGenerationEvents();
 }
+
+public sealed class TokenGenerationEvents
+{
+    public Func<TokenGenerationContext, Task> OnGeneration { get; set; } = context => Task.CompletedTask;
+}
+

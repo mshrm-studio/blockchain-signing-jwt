@@ -9,8 +9,8 @@ namespace Blockchain.Signing.Auth.Signing.Interfaces
 {
     public interface ISignatureService
     {
-        bool VerifySignature(string message, string signature, string address);
-        bool VerifyAndRecoverPublicKeyFromSignature(string message, string signature, out string? address);
+        Task<bool> VerifySignatureAsync(string message, string signature, string address);
+        Task<(bool, string?)> VerifyAndRecoverPublicKeyFromSignatureAsync(string message, string signature);
         SupportedMethod GetSupportedMethod();
     }
 }

@@ -12,6 +12,9 @@ namespace Blockchain.Signing.Auth.Models
         [JsonPropertyName("token")]
         public required string Token { get; init; }
 
+        [JsonPropertyName("refresh_token")]
+        public string? RefreshToken { get; init; }
+
         [JsonPropertyName("expires_at")]
         public required long ExpiresAt { get; init; }
     }

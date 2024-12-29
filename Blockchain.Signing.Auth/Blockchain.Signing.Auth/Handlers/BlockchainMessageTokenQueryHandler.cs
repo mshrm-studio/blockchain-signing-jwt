@@ -17,38 +17,49 @@ using System.Threading.Tasks;
 using Blockchain.Signing.Auth.Models.Enums;
 using Org.BouncyCastle.Asn1.Ocsp;
 using Solnet.Rpc.Models;
+using System.Globalization;
+using Blockchain.Signing.Auth.Services;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http;
+using NBitcoin.Secp256k1;
 
 namespace Blockchain.Signing.Auth.Handlers
 {
     internal class BlockchainMessageTokenQueryHandler
     {
         private readonly IServiceProvider _serviceProvider;
+        private readonly IBlockchainJwtService _blockchainJwtService;
+        private readonly HttpContext _httpContext;
+        private readonly TokenGenerationOptions _tokenGenerationOptions;
 
-        public BlockchainMessageTokenQueryHandler(IServiceProvider serviceProvider)
+        public BlockchainMessageTokenQueryHandler(
+            IServiceProvider serviceProvider,
+            IBlockchainJwtService blockchainJwtService,
+            HttpContext httpContext,
+            IOptions<TokenGenerationOptions> tokenGenerationOptions
+        )
         {
             _serviceProvider = serviceProvider;
+            _blockchainJwtService = blockchainJwtService;
+            _httpContext = httpContext;
+            _tokenGenerationOptions = tokenGenerationOptions.Value;
         }
 
         internal async Task<TokenResponse> HandleAsync(TokenQuery request)
         {
-            var options = _serviceProvider.GetService<IOptionsMonitor<TokenGenerationOptions>>();
-            if (options is null)
-            {
-                throw new OptionsNotRegisteredException($"Options have not been added.");
-            }
-
-            var publicKey = GetVerifiedPublicKey(request.Network.Trim(), request.Signature, request.RawMessage.ToString(), request.PublicKey);
+            var publicKey = await GetVerifiedPublicKeyAsync(request.Network.Trim(), request.Signature,
+                request.RawMessage.ToString(BlockchainAuthenticationConstants.MessageDateFormat, CultureInfo.InvariantCulture), request.PublicKey);
             if (string.IsNullOrEmpty(publicKey))
             {
                 throw new FailedToVerifyException();
             }
 
-            if (Math.Abs((DateTime.UtcNow - request.RawMessage).TotalSeconds) > options.CurrentValue.ExpiresThresholdInSeconds)
+            if (Math.Abs((DateTime.UtcNow - request.RawMessage).TotalSeconds) > _tokenGenerationOptions.ExpiresThresholdInSeconds)
             {
                 throw new MessageExpiredException("The message has expired.");
             }
 
-            var token = GenerateToken(options.CurrentValue, publicKey);
+            var token = await GenerateTokenAsync(publicKey);
 
             return new TokenResponse()
             {
@@ -57,7 +68,16 @@ namespace Blockchain.Signing.Auth.Handlers
             };
         }
 
-        private string? GetVerifiedPublicKey(string network, string signature, string message, string? publicKey)
+        internal async Task<Jwt> GenerateTokenAsync(string publicKey)
+        {
+            var context = new TokenGenerationContext(publicKey, _httpContext);
+
+            await _tokenGenerationOptions.Events.OnGeneration(context);
+
+            return _blockchainJwtService.GenerateJwt(context);
+        }
+
+        internal async Task<string?> GetVerifiedPublicKeyAsync(string network, string signature, string message, string? publicKey)
         {
             var signingService = _serviceProvider.GetKeyedService<ISignatureService>(network);
             if (signingService is null)
@@ -70,63 +90,40 @@ namespace Blockchain.Signing.Auth.Handlers
             switch (signingService.GetSupportedMethod())
             {
                 case SupportedMethod.VerifyAndRecoverPublicKey:
-                    verifiedPublicKey = VerifyAndRecoverPublicKeyFromSignature(signingService, message, signature);
+                    verifiedPublicKey = await VerifyAndRecoverPublicKeyFromSignatureAsync(signingService, message, signature);
                     break;
                 case SupportedMethod.Verify:
-                    verifiedPublicKey = Verify(signingService, message, signature, publicKey, network);
+                    verifiedPublicKey = await VerifyAsync(signingService, message, signature, publicKey, network);
                     break;
             }
 
             return verifiedPublicKey;
         }
 
-        private string VerifyAndRecoverPublicKeyFromSignature(ISignatureService signatureService, string message, string signature)
+        internal async Task<string> VerifyAndRecoverPublicKeyFromSignatureAsync(ISignatureService signatureService, string message, string signature)
         {
-            var parsedCorrectly = signatureService.VerifyAndRecoverPublicKeyFromSignature(message, signature, out var verifiedPublicKey);
-            if (!parsedCorrectly || string.IsNullOrEmpty(verifiedPublicKey))
+            var result = await signatureService.VerifyAndRecoverPublicKeyFromSignatureAsync(message, signature);
+            if (!result.Item1 || string.IsNullOrEmpty(result.Item2))
             {
                 throw new FailedToParseMessageException("Could not get address from signature provided");
             }
 
-            return verifiedPublicKey;
+            return result.Item2;
         }
 
-        private string Verify(ISignatureService signatureService, string message, string signature, string publicKey, string network)
+        internal async Task<string> VerifyAsync(ISignatureService signatureService, string message, string signature, string publicKey, string network)
         {
             if (string.IsNullOrEmpty(publicKey))
             {
                 throw new PublicKeyIsRequiredException($"Network {network} uses a algorithm where the public key is not recoverable from signature.");
             }
-            var parsedCorrectly = signatureService.VerifySignature(message, signature, publicKey);
-            if (!parsedCorrectly || string.IsNullOrEmpty(publicKey))
+            var parsedCorrectly = await signatureService.VerifySignatureAsync(message, signature, publicKey);
+            if (!parsedCorrectly)
             {
                 throw new FailedToParseMessageException("Could not get address from signature provided");
             }
 
             return publicKey;
-        }
-
-        private (string Token, long ExpiresAt) GenerateToken(TokenGenerationOptions options, string publicKey)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(options.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                IssuedAt = DateTime.UtcNow,
-                Issuer = options.Issuer,
-                Audience = options.Audience,
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(BlockchainAuthenticationClaimTypes.PublicKey, publicKey)
-                }),
-                Expires = DateTime.UtcNow.AddMinutes(options.ExpiresInMinutes),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            var expiresAt = (tokenDescriptor.Expires.Value - DateTime.UtcNow);
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            return (tokenHandler.WriteToken(token), (long)expiresAt.TotalSeconds);
         }
     }
 }

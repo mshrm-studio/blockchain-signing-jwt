@@ -19,7 +19,7 @@ public class EthereumSignatureService : ISignatureService
         _logger = logger;
     }
 
-    public bool VerifySignature(string message, string signature, string address)
+    public async Task<bool> VerifySignatureAsync(string message, string signature, string address)
     {
         try
         {
@@ -36,22 +36,20 @@ public class EthereumSignatureService : ISignatureService
         }
     }
 
-    public bool VerifyAndRecoverPublicKeyFromSignature(string message, string signature, out string? address)
+    public async Task<(bool, string?)> VerifyAndRecoverPublicKeyFromSignatureAsync(string message, string signature)
     {
-        address = null;
-
         try
         {
             var signer = new EthereumMessageSigner();
-            address = signer.EncodeUTF8AndEcRecover(message, signature);
+            var address = signer.EncodeUTF8AndEcRecover(message, signature);
 
-            return true;
+            return (true, address);
         }
         catch (Exception ex)
         {
             _logger.LogCritical($"Error verifying signature: {ex.Message}");
 
-            return false;
+            return (false, null);
         }
     }
 

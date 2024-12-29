@@ -12,6 +12,8 @@ public static class BlockchainAuthenticationConstants
     public static string BlockchainChallengeScheme = "BlockchainSignature";
     public static string BlockchainAuthenticationTypeHeader = "X-Blockchain-Type";
 
+    public static string MessageDateFormat = "yyyy-MM-ddTHH:mm:ss.fffZ";
+
     public static class BlockChains
     {
         public static string Ethereum = "Ethereum";
