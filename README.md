@@ -2,7 +2,7 @@
 
 ## Description
 
-This is adds an endpoint to your project that will support the use of blockchain signatures/public key to generate a JWT. This JWT can then be used to login to your app if configured in authorization).
+This is adds an endpoint to your project that will support the use of blockchain signatures/public key to generate a JWT. This JWT can then be used to login to your app (if configured in authorization).
 
 ## Currently Supported Signings
 
