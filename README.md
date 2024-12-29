@@ -27,22 +27,26 @@ Note: "MyCustomNetwork" will be what you use for "network" in the token request 
 ```
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.AddBlockchainSignatureVerification(options => 
+// Add event once the signing has been validated
+options.Events.OnSignatureValidation = (context) =>
 {
-    // Setting options from config
-    builder.Configuration.GetSection("TokenGenerationOptions").Bind(options);
+    var validatedAddress = context.Address;
+    var network = context.Network;
 
-    // Add event to add additional claims
-    options.Events.OnSignatureValidation = (context) =>
+    // We can add additional claims to the JWT ie.
+    var soulBoundToken = _service.GetSoulBoundToken(validatedAddress, network);
+    if (!string.IsNullOrEmpty(soulBoundToken.Name))
     {
-        var address = context.Address;
+        context.Claims.Add(new System.Security.Claims.Claim("accountname", soulBoundToken.Name));
+    }
 
-        context.Claims.Add(new System.Security.Claims.Claim("test", "test1"));
+    // We can handle refresh token ie. 
+    context.RefreshToken = _service.GenerateRefreshToken(validatedAddress);
 
-        return Task.CompletedTask;
-    };
-});
+    // etc.
+
+    return Task.CompletedTask;
+};
 
 .....
 ```
