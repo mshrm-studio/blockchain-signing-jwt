@@ -25,6 +25,7 @@ public static class WebApplicationBuilderExtensions
         builder.Services.AddTransient<IBlockchainJwtService, BlockchainJwtService>();
 
         builder.Services.AddTransient<BlockchainMessageTokenQueryHandler>();
+        builder.Services.AddTransient<RefreshTokenQueryHandler>();
 
         builder.Services.AddKeyedTransient<ISignatureService, EvmSignatureService>(BlockchainAuthenticationConstants.BlockChains.Evm);
         builder.Services.AddKeyedTransient<ISignatureService, SolanaSignatureService>(BlockchainAuthenticationConstants.BlockChains.Solana);
