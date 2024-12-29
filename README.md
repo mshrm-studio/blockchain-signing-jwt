@@ -114,7 +114,7 @@ GET ../blockchain/token
 {
   "address": "0x1FBE3Df7EeBf894f83c0eE2b1a10d1B1a5cda454",
   "network": "Evm",
-  "test": "test1", // Added custom via "OnSignatureValidation" event
+  "accountname": "test1", // Added custom via "OnSignatureValidation" event
   "nbf": 1735464652,
   "exp": 1735468252,
   "iat": 1735464652,
