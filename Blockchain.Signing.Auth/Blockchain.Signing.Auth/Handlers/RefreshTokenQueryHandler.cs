@@ -46,7 +46,8 @@ internal class RefreshTokenQueryHandler
 
         var parsedToken = ParseToken(request.Token);
 
-        var context = new RefreshTokenGenerationContext(request.Token, request.RefreshToken, _contextAccessor.HttpContext);
+        var context = new RefreshTokenGenerationContext(parsedToken.Address, parsedToken.Network,
+            _contextAccessor.HttpContext);
 
         var success = await _tokenGenerationOptions.Events.OnRefreshTokenValidation(context);
         if (!success)
@@ -76,8 +77,13 @@ internal class RefreshTokenQueryHandler
     internal (string Network, string Address) ParseToken(string rawToken)
     {
         var handler = new JwtSecurityTokenHandler();
+
         var jsonToken = handler.ReadToken(rawToken);
         var jwtSecurityToken = jsonToken as JwtSecurityToken;
+        if (jwtSecurityToken is null)
+        {
+            throw new NullReferenceException("JWT couldn't be read");
+        }
 
         var network = jwtSecurityToken.Claims.FirstOrDefault(x => x.Type == BlockchainAuthenticationClaimTypes.Network);
         var address = jwtSecurityToken.Claims.FirstOrDefault(x => x.Type == BlockchainAuthenticationClaimTypes.Address);
@@ -85,6 +91,11 @@ internal class RefreshTokenQueryHandler
         if (string.IsNullOrEmpty(network?.Value))
         {
             throw new ClaimDoesntExistException($"{nameof(network)} claim named '{BlockchainAuthenticationClaimTypes.Network}' doesn't exist");
+        }
+
+        if (string.IsNullOrEmpty(address?.Value))
+        {
+            throw new ClaimDoesntExistException($"{nameof(address)} claim named '{BlockchainAuthenticationClaimTypes.Address}' doesn't exist");
         }
 
         return (network.Value, address.Value);

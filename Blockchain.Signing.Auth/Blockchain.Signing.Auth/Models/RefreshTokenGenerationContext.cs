@@ -10,13 +10,13 @@ namespace Blockchain.Signing.Auth.Models
     public sealed class RefreshTokenGenerationContext
     {
         public HttpContext HttpContext { get; internal set; }
-        public string Token { get; internal set; }
-        public string RefreshToken { get; internal set; }
+        public string Address { get; internal set; }
+        public string Network { get; internal set; }
 
-        public RefreshTokenGenerationContext(string token, string refreshToken, HttpContext httpContext)
+        public RefreshTokenGenerationContext(string address, string network, HttpContext httpContext)
         {
-            this.Token = token;
-            this.RefreshToken = refreshToken;
+            this.Address = address;
+            this.Network = network;
             this.HttpContext = httpContext;
         }
     }
