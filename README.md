@@ -14,7 +14,7 @@ This is adds an endpoint to your project that will support the use of blockchain
 ## Extensibility
 
 - Create a new class that implements ISignatureService
-- Add to DI as aa keyed service ie.
+- Add to DI as a keyed service ie.
 ```
 // MyCustomNetworkSignatureService implements ISignatureService
 builder.Services.AddCustomSignatureService<MyCustomNetworkSignatureService>("MyCustomNetwork");
@@ -105,7 +105,7 @@ GET ../blockchain/token
 ### Token Generation Options
 ```
 {
-    // This is the key used to generaate the token (private key).
+    // This is the key used to generate the token (private key).
     "Secret": "8a1dd1f0-dc55-4e0e-91a0-81fe44417661",
 
     // This is the token expiry time. 
@@ -132,5 +132,5 @@ GET ../blockchain/token
 
 ## Testing
 
-- Unit tests [COMING SOON]
-- A test Javaascript file has been added [here](https://github.com/mshrm-studio/blockchain-signing-jwt/blob/main/Blockchain.Signing.Auth/Blockchain.Signing.Auth/JS/get-signature.js) to generate a signature using Metamask
+- Unit tests
+- A test Javascript file has been added [here](https://github.com/mshrm-studio/blockchain-signing-jwt/blob/main/Blockchain.Signing.Auth/Blockchain.Signing.Auth/JS/get-signature.js) to generate a signature using Metamask
