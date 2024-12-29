@@ -82,6 +82,7 @@ GET ../blockchain/token
 }
 ```
 
+### Decoded Token
 ```
 {
   "alg": "HS256",
