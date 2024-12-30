@@ -43,7 +43,7 @@ builder.AddBlockchainSignatureVerification(options =>
         var soulBoundToken = service.GetSoulBoundToken(validatedAddress, network);
         if (!string.IsNullOrEmpty(soulBoundToken.Name))
         {
-            context.Claims.Add(new System.Security.Claims.Claim("accountname", soulBoundToken.Name));
+            context.Claims.Add(new Claim("accountname", soulBoundToken.Name));
         }
 
         // We can handle refresh token ie. 
